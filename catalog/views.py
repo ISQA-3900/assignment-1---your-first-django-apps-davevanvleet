@@ -53,3 +53,16 @@ class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
     def get_queryset(self):
         return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
     
+def Email(request):
+    subject = "this can be a form field value or user info the email subject"
+    message = "this can be a form field value or user info the email subject"
+    user = request.user  #request was passed to the method as a parameter for the view
+    user_email = user.email # pull user’s email out of the user record#try to send the e-mail – note you can send to multiple users – this just sends#to one user.
+    try:    
+        send_mail(subject, message, 'davevvwebapp@gmail.com', [user_email])    
+        sent = True
+    except:    
+        print("Error sending e-mail")
+
+    return render(request, "password_reset_email.html")
+    
